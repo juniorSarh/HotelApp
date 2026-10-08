@@ -13,10 +13,13 @@
   "type": "commonjs",
   "dependencies": {
     "@types/node": "^26.6.4",
+    "dotenv": "^18.0.6",
     "express": "^5.2.1",
+    "pg": "^8.23.1",
     "typescript": "^7.0.2"
   },
   "devDependencies": {
+    "@types/pg": "^8.23.1",
     "nodemon": "^1.14.10",
     "tsx": "^4.23.15"
   }

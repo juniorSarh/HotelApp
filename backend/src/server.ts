@@ -1,8 +1,11 @@
+import dotenv from 'dotenv'
+import { env } from 'node:process'
 const express = require('express')
 
+dotenv.config()
 const app = express()
 
-const PORT = 3000
+const PORT = (process.env.PORT)
 
 
 app.listen(PORT,()=>
