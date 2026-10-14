@@ -4,14 +4,24 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// hosted database
+const isProduction = process.env.NODE_ENV === 'production';
+
 //new pool instance
-const pool = new Pool({
-    user: process.env.DB_USER || "postgres",
-    host: process.env.DB_HOST || "127.0.0.1",
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: Number(process.env.DB_PORT || 5432),
-});
+const pool = new Pool(
+    process.env.DATABASE_URL
+      ? {
+          connectionString: process.env.DATABASE_URL,
+          ssl: isProduction ? { rejectUnauthorized: false } : false,
+        }
+      : {
+          user: process.env.DB_USER || 'postgres',
+          host: process.env.DB_HOST || '127.0.0.1',
+          database: process.env.DB_NAME,
+          password: process.env.DB_PASSWORD,
+          port: Number(process.env.DB_PORT || 5432),
+        }
+  );
 
 
 //export query method for querying the database
