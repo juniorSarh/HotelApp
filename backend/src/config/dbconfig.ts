@@ -1,27 +1,29 @@
-import {Pool} from 'pg';
-import dotenv from 'dotenv'
+import { Pool } from "pg";
+import dotenv from "dotenv";
 
 
 dotenv.config();
 
-
-const pool = new Pool ({
-    user: process.env.DB_USERNAME,
-    host: process.env.DB_HOST,
-    database: process.env.DB_DATABASE,
-    password: process.env.DB_PASSWORD,
-    port: Number(process.env.DB_PORT) || 5432
-})
-
-pool.on('connect', ()=>
-{
-    console.log('connected to the postgres database.')
+//new pool instance
+const pool = new Pool({
+    user: process.env.DB_USER || "postgres",
+    host: process.env.DB_HOST || "127.0.0.1",
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: Number(process.env.DB_PORT || 5432),
 });
 
-pool.on('error', (err)=>
-{
-    console.error('unexpected error occured', err)
-    process.exit(-1);
-})
 
-export default pool;
+//export query method for querying the database
+export const query = (text: string, params?: any[]) => pool.query(text, params);
+
+
+// Function to test database connection
+export const testConnection = async () => {
+  try {
+    const res = await pool.query("SELECT NOW()");
+    console.log("Database connected:", res.rows[0]);
+  } catch (err) {
+    console.error("Database connection error:", err);
+  }
+};

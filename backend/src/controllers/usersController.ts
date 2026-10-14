@@ -18,7 +18,7 @@ export const createUser = async (
     const newUser = await userService.createUser({ email, name });
     res.status(201).json(newUser);
   } catch (error: any) {
-    if (error.code === '23505') { // Postgres unique constraint violation
+    if (error.code === '23505') { // Postgres unique email error
       res.status(409).json({ error: 'Email already exists' });
       return;
     }
@@ -48,7 +48,7 @@ export const getUserById = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
-    const user = await userService.getUserById(id as string);
+    const user = await userService.getUserById(id as string );
 
     if (!user) {
       res.status(404).json({ error: 'User not found' });
